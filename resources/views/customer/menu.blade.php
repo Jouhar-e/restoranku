@@ -15,7 +15,7 @@
                                             <div class="fruite-img">
                                                 <img src="{{ asset('img_item_upload/' . $item->img) }}"
                                                     class="img-fluid w-100 rounded-top" alt=""
-                                                    onerror="this.onerror=null;this.src='{{ $item->img }}';">
+                                                    onerror="this.onerror=null;this.src='https://dummyimage.com/300x450/ced4da/6c757d.jpg&text=No+Image';">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute 
                                             @if ($item->category->cat_name == 'Makanan') bg-warning
@@ -38,19 +38,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                <!-- Pagination -->
-                                <!-- <div class="col-12">
-                                                                                                            <div class="pagination d-flex justify-content-center mt-5">
-                                                                                                                        <a href="#" class="rounded">&laquo;</a>
-                                                                                                                        <a href="#" class="active rounded">1</a>
-                                                                                                                        <a href="#" class="rounded">2</a>
-                                                                                                                        <a href="#" class="rounded">3</a>
-                                                                                                                        <a href="#" class="rounded">4</a>
-                                                                                                                        <a href="#" class="rounded">5</a>
-                                                                                                                        <a href="#" class="rounded">6</a>
-                                                                                                                        <a href="#" class="rounded">&raquo;</a>
-                                                                                                                    </div>
-                                                                                                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -63,20 +50,21 @@
 @section('script')
     <script>
         function addToCart(menuId) {
-            fetch("{{ route('cart.add') }}"), {
+            // console.log(menuId);
+            fetch("{{ route('cart.add') }}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'aplication/json',
+                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
                         id: menuId
                     })
-                }
+                })
                 .then(response => response.json())
-                .then(data =>
+                .then(data => {
                     alert(data.message)
-                )
+                })
                 .catch((error) => {
                     console.error('Error:', error);
                 });
