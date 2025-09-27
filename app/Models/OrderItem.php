@@ -12,11 +12,11 @@ class OrderItem extends Model
     protected $fillable = ['order_id', 'item_id', 'quantity', 'price', 'tax', 'total_price', 'created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
-    public function orders(){
+    public function order(){
         return $this->belongsTo(Order::class);
     }
 
-    public function items(){
+    public function item(){
         return $this->belongsTo(Item::class);
     }
 

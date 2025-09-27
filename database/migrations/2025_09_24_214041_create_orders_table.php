@@ -17,11 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('subtotal');
             $table->integer('tax');
-            $table->integer('grandtotal');
-            $table->enum('status', ['panding', 'settlement', 'cooked']);
-            $table->integer('number');
+            $table->integer('grand_total');
+            $table->enum('status', ['pending', 'settlement', 'cooked']);
+            $table->integer('table_number');
             $table->enum('payment_method', ['tunai', 'qris']);
-            $table->text('note');
+            $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
