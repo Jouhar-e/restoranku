@@ -39,10 +39,10 @@ class MenuController extends Controller
 
         // dd(session('cart'));
 
-        if (!$menu) {
+        if (! $menu) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Menu tidak ditemukan!'
+                'message' => 'Menu tidak ditemukan!',
             ]);
         }
 
@@ -56,7 +56,7 @@ class MenuController extends Controller
                 'name' => $menu->name,
                 'price' => $menu->price,
                 'img' => $menu->img,
-                'qty' => 1
+                'qty' => 1,
             ];
         }
 
@@ -65,7 +65,7 @@ class MenuController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Berhasil ditambahkan ke keranjang',
-            'cart' => $cart
+            'cart' => $cart,
         ]);
     }
 
@@ -73,7 +73,6 @@ class MenuController extends Controller
     {
         $itemId = $request->id;
         $newQty = $request->qty;
-
 
         if ($newQty <= 0) {
             return response()->json(['success' => false]);
@@ -112,6 +111,7 @@ class MenuController extends Controller
     public function clearCart()
     {
         Session::forget('cart');
+
         return redirect()->route('menu')->with('success', 'Keranjang berhasil dikosongkan');
     }
 
@@ -140,7 +140,6 @@ class MenuController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'payment' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -156,22 +155,22 @@ class MenuController extends Controller
         foreach ($cart as $item) {
             $totalAmount += $item['qty'] * $item['price'];
 
-            $totalDetails[] = [
+            $itemDetails[] = [
                 'id' => $item['id'],
-                'price' => (int) $item['price'] + ($item['price'] * 0.1),
+                'price' => (int) ($item['price'] + ($item['price'] * 0.1)),
                 'quantity' => $item['qty'],
-                'name' => substr($item['name'], 0, 50)
+                'name' => substr($item['name'], 0, 50),
             ];
         }
 
         $user = User::firstOrCreate([
             'fullname' => $request->fullname,
             'phone' => $request->phone,
-            'role_id' => 4
+            'role_id' => 4,
         ]);
 
         $order = Order::create([
-            'order_code' => 'ORD-' . $tableNumber . '-' . time(),
+            'order_code' => 'ORD-'.$tableNumber.'-'.time(),
             'user_id' => $user->id,
             'subtotal' => $totalAmount,
             'tax' => 0.1 * $totalAmount,
@@ -179,7 +178,7 @@ class MenuController extends Controller
             'status' => 'pending',
             'table_number' => $tableNumber,
             'payment_method' => $request->payment,
-            'notes' => $request->text
+            'notes' => $request->text,
         ]);
 
         foreach ($cart as $itemId => $item) {
@@ -195,24 +194,61 @@ class MenuController extends Controller
 
         Session::forget('cart');
 
-        return redirect()->route('checkout.success', ['orderId'=>$order->order_code])->with('success', 'Pesanan berhasil dibuat');
-    }
-  public function checkoutSuccess($orderId) {
-        $order = Order::where('order_code', $orderId)->first();
+        if ($request->payment == 'tunai') {
+            return redirect()->route('checkout.success', ['orderId' => $order->order_code])->with('success', 'Pesanan berhasil dibuat');
+        } else {
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            \Midtrans\Config::$isProduction = config('midtrans.is_production');
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
 
-        if (!$order) {
-            return redirect()->route('menu')->with('error','Pesanan tidak ditemukan');
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $order->order_code,
+                    'gross_amount' => (int)$order->grand_total,
+                ],
+                'item_details' => $itemDetails,
+                'customer_details' => [
+                    'first_name' => $user->fullname ?? 'Guest',
+                    'phone' => $user->phone,
+                ],
+                'payment_type' => 'qris',
+            ];
+
+            try {
+                $sanpToken = \Midtrans\Snap::getSnapToken($params);
+                return response()->json([
+                    'status'=>'success',
+                    'snap_token'=>$sanpToken,
+                    'order_code'=>$order->order_code,
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status'=>'error',
+                    'message'=>'Gagal membuat pesanan. Silakan coba lagi',
+                ]);
+            }
+            
         }
 
-        $orderItems = OrderItem::where('order_id',$order->id)->get();
+    }
+
+    public function checkoutSuccess($orderId)
+    {
+        $order = Order::where('order_code', $orderId)->first();
+
+        if (! $order) {
+            return redirect()->route('menu')->with('error', 'Pesanan tidak ditemukan');
+        }
+
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
 
         if ($order->payment_method == 'qris') {
             $order->status = 'settlement';
             $order->save();
         }
-        
-        return view('customer.success', compact('order','orderItems'));
-        
+
+        return view('customer.success', compact('order', 'orderItems'));
+
     }
-  
 }
