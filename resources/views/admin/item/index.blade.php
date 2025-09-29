@@ -29,6 +29,13 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            
+                            <p><i class="bi bi-check-circle"></i> {{ session('success') }}</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <table class="table table-striped" id="table1">
                         <thead>
                             <tr>
@@ -62,7 +69,7 @@
                                         <span
                                             class="badge {{ $item->is_active == 1 ? 'bg-success' : 'bg-danger' }}">{{ $item->is_active == 1 ? 'Aktif' : 'Tidak Aktif' }}</span>
                                     </td>
-                                    <td>
+                                    <td class="">
                                         <a href="{{ route('items.edit', $item->id) }}" class="btn btn-warning btn-sm"><i
                                                 class="bi bi-pencil"></i> Ubah</a>
                                         <form action="{{ route('items.destroy', $item->id) }}" method="post">

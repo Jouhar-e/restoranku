@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,7 +12,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::orderBy('fullname','asc')->get();
+
+        return view('admin.user.index', compact('users'));
     }
 
     /**
@@ -19,7 +22,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -27,7 +30,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'username'=>'',
+            'password'=>'',
+            'fullname'=>'',
+            'email'=>'',
+            'phone'=>'',
+            'role_id'=>'',
+        ]);
+
+        User::create($validate);
+
+        return redirect()->route('users.index')->with('success','Data behasil ditambahkan');
+
     }
 
     /**

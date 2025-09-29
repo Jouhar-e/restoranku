@@ -65,21 +65,21 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item {{ request()->routeIs('users.*' ? 'active' : '') }}">
+                    <li class="sidebar-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}" class='sidebar-link'>
                             <i class="bi bi-person-fill"></i>
                             <span>Manajemen Karyawan</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item {{ request()->routeIs('roles.*' ? 'active' : '') }}">
+                    <li class="sidebar-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                         <a href="{{ route('roles.index') }}" class='sidebar-link'>
                             <i class="bi bi-person-fill"></i>
                             <span>Manajemen Role</span>
                         </a>
                     </li>
                     
-                    <li class="sidebar-item {{ request()->routeIs('categories.*' ? 'active' : '') }}">
+                    <li class="sidebar-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
                         <a href="{{ route('categories.index') }}" class='sidebar-link'>
                             <i class="bi bi-person-fill"></i>
                             <span>Manajemen Kategori</span>

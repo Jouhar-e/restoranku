@@ -13,6 +13,15 @@
     </div>
     <div class="card">
         <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h5 class="alert-heading">Create Error!</h5>
+                    @foreach ($errors as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <form action="{{ route('items.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-body">
@@ -47,8 +56,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="image">Gambar</label>
-                                <input type="file" class="form-control" name="image" id="image" required>
+                                <label for="img">Gambar</label>
+                                <input type="file" class="form-control" name="img" id="img" required>
                             </div>
 
                             <div class="form-group">
