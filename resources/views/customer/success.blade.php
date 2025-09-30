@@ -43,7 +43,7 @@
             @if ($order->payment_method == 'tunai')
                 <p class="small text-center">Tujukan kode bayar ini ke kasir untuk meyelesaikan pembayaran. Jangan lupa
                     bayar ya!</p>
-            @elseif ($order->payment_method == qris)
+            @elseif ($order->payment_method == 'qris')
                 <p class="small text-center">Yeay! Pembayaran sukses. Silakan ditunggu pesanannya</p>
             @endif
 

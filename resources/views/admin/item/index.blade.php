@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Category')
+@section('title', 'Menu')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/admin/extensions/simple-datatables/style.css') }}">
@@ -31,7 +31,7 @@
                 <div class="card-body">
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            
+
                             <p><i class="bi bi-check-circle"></i> {{ session('success') }}</p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -46,7 +46,7 @@
                                 <th>Harga</th>
                                 <th>Kategori</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th colspan="2">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,17 +69,30 @@
                                         <span
                                             class="badge {{ $item->is_active == 1 ? 'bg-success' : 'bg-danger' }}">{{ $item->is_active == 1 ? 'Aktif' : 'Tidak Aktif' }}</span>
                                     </td>
-                                    <td class="">
+                                    <td>
                                         <a href="{{ route('items.edit', $item->id) }}" class="btn btn-warning btn-sm"><i
                                                 class="bi bi-pencil"></i> Ubah</a>
-                                        <form action="{{ route('items.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Apakah ada yakin ingin mengahapus data ini?')">
-                                                <i class="bi bi-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                    </td>
+                                    <td>
+                                        @if ($item->is_active == 1)
+                                            <form action="{{ route('items.updateStatus', $item->id) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="is_active" value="0">
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Apakah anda yakin ingin menonaktifkan menu ini?')">
+                                                    <i class="bi bi-x"></i> Nonaktifkan
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('items.updateStatus', $item->id) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="is_active" value="1">
+                                                <button type="submit" class="btn btn-success btn-sm"
+                                                    onclick="return confirm('Apakah anda yakin ingin mengaktifkan menu ini?')">
+                                                    <i class="bi bi-check"></i> Aktifkan
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

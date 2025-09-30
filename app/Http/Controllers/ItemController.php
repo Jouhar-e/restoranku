@@ -112,8 +112,8 @@ class ItemController extends Controller
         // upload image jika ada file baru
         if ($request->hasFile('img')) {
             // hapus gambar lama jika ada
-            if ($item->img && file_exists(public_path('img_item_upload/' . $item->img))) {
-                unlink(public_path('img_item_upload/' . $item->img));
+            if ($item->img && file_exists(public_path('img_item_upload/'.$item->img))) {
+                unlink(public_path('img_item_upload/'.$item->img));
             }
             $image = $request->file('img');
             $imageName = time().'.'.$image->getClientOriginalExtension();
@@ -134,12 +134,21 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
 
         // Hapus gambar jika ada
-        if ($item->img && file_exists(public_path('img_item_upload/' . $item->img))) {
-            unlink(public_path('img_item_upload/' . $item->img));
+        if ($item->img && file_exists(public_path('img_item_upload/'.$item->img))) {
+            unlink(public_path('img_item_upload/'.$item->img));
         }
 
         $item->delete();
 
         return redirect()->route('items.index')->with('success', 'Menu berhasil dihapus');
+    }
+
+    public function updateStatus($id)
+    {
+        $item = Item::findOrFail($id);
+        $item->is_active = ! $item->is_active;
+        $item->save();
+
+        return redirect()->route('items.index')->with('success', 'Item status updated successfully.');
     }
 }

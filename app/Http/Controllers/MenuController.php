@@ -178,7 +178,7 @@ class MenuController extends Controller
             'status' => 'pending',
             'table_number' => $tableNumber,
             'payment_method' => $request->payment,
-            'notes' => $request->text,
+            'notes' => $request->notes,
         ]);
 
         foreach ($cart as $itemId => $item) {

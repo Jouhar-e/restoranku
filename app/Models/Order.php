@@ -12,7 +12,7 @@ class Order extends Model
     protected $fillable = ['order_code', 'user_id', 'subtotal', 'tax', 'grand_total', 'status', 'table_number', 'payment_method', 'notes', 'created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
