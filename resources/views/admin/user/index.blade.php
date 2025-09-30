@@ -16,7 +16,7 @@
                     <p class="text-subtitle text-muted">Kelengkapan data user.</p>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
-                    <a href="{{ route('items.create') }}" class="btn btn-primary float-start float-lg-end"><i
+                    <a href="{{ route('users.create') }}" class="btn btn-primary float-start float-lg-end"><i
                             class="bi bi-plus"></i> Tambah Data</a>
                 </div>
             </div>
@@ -41,7 +41,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Username</th>
-                                <th>Password</th>
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Nomer Hp</th>
@@ -54,7 +53,6 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->username }}</td>
-                                    <td>{{ $user->password }}</td>
                                     <td>{{ $user->fullname }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>
@@ -62,9 +60,9 @@
                                         {{ $user->role->role_name }}
                                     </td>
                                     <td class="">
-                                        <a href="{{ route('items.edit', $user->id) }}" class="btn btn-warning btn-sm"><i
+                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm"><i
                                                 class="bi bi-pencil"></i> Ubah</a>
-                                        <form action="{{ route('items.destroy', $user->id) }}" method="post">
+                                        <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
