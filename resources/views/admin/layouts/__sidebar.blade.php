@@ -50,7 +50,7 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    
+
                     <li class="sidebar-item {{ request()->routeIs('orders.*' ? 'active' : '') }}">
                         <a href="{{ route('orders.index') }}" class='sidebar-link'>
                             <i class="bi bi-cart-fill"></i>
@@ -78,12 +78,21 @@
                             <span>Manajemen Role</span>
                         </a>
                     </li>
-                    
+
                     <li class="sidebar-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
                         <a href="{{ route('categories.index') }}" class='sidebar-link'>
                             <i class="bi bi-person-fill"></i>
                             <span>Manajemen Kategori</span>
                         </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <form method="POST" action="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                            @csrf
+                            <a href="{{ route('logout') }}" class="sidebar-link">
+                                <i class="bi bi-box-arrow-right"></i> <span>{{ __('Log Out') }}</span> </a>
+                        </form>
                     </li>
                 </ul>
             </div>

@@ -72,8 +72,23 @@
                                     <td>{{ $order->notes ?? '-' }}</td>
                                     <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
                                     <td class="">
-                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-warning btn-sm"><i
-                                                class="bi bi-pencil"></i> Ubah</a>
+                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm"><i
+                                                class="bi bi-eye"></i> Lihat</a>
+                                        @if (Auth::user()->role->role_name == 'admin' || Auth::user()->role->role_name == 'cashier')
+                                            @if ($order->status == 'pending' && $order->payment_method == 'tunai')
+                                                <form action="{{ route('orders.statusUpdate', $order->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm"><i
+                                                            class="bi bi-check"></i> Terima Pesanan</button>
+                                                </form>
+                                            @endif
+                                        @elseif ($order->status == 'settlement' && Auth::user()->role->role_name == 'chef')
+                                            <form action="{{ route('orders.statusUpdate', $order->id) }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="bi bi-check"></i> Pesanan Siap</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

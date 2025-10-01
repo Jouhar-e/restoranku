@@ -24,13 +24,19 @@ Route::post('/checkout/store', [MenuController::class, 'storeOrder'])->name('che
 Route::get('/checkout/success/{orderId}', [MenuController::class, 'checkoutSuccess'])->name('checkout.success');
 
 // Admin routes
-Route::get('/dashboard', function(){
-    return view('admin.dashboard');
-})->name('dashboard');
-Route::resource('categories', CategoryController::class);
-Route::resource('items', ItemController::class);
-Route::resource('roles', RoleController::class);
-Route::resource('users', UserController::class);
-Route::resource('orders', OrderController::class);
+Route::middleware('role:admin')->group(function () {
+    Route::resource('categories', CategoryController::class);
+    Route::resource('items', ItemController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+});
 
-Route::post('items/update-status/{order}', [ItemController::class, 'updateStatus'])->name('items.updateStatus');
+Route::middleware('role:admin|cashier|chef')->group(function () {
+    Route::resource('items', ItemController::class);
+    Route::resource('orders', OrderController::class);
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+    Route::post('items/update-status/{order}', [ItemController::class, 'updateStatus'])->name('items.updateStatus');
+    Route::post('orders/status/{order}', [OrderController::class, 'statusUpdate'])->name('orders.statusUpdate');
+});
