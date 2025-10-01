@@ -45,7 +45,7 @@
                                 <th>Email</th>
                                 <th>Nomer Hp</th>
                                 <th>Role</th>
-                                <th>Aksi</th>
+                                <th colspan="2">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,6 +62,8 @@
                                     <td class="">
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm"><i
                                                 class="bi bi-pencil"></i> Ubah</a>
+                                    </td>
+                                    <td>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')

@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::where('role_name', '!=', 'customer')->get();
 
         return view('admin.user.create', compact('roles'));
     }
@@ -76,19 +76,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
         // Validate the request data
         $validatedData = $request->validate([
             'fullname' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username,'.$user->id,
             'phone' => 'required|string|max:15',
-            'email' => 'required|email|unique:users,email,'. $user->id,
-            'password' => ['nullable','string','min:8','confirmed', function($attribute, $value, $fail) use ($user) {
-                    if(Hash::check($value, $user->password)) {
-                        $fail("Password baru tidak boleh sama dengan password lama");
-                    }
-                },
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'password' => ['nullable', 'string', 'min:8', 'confirmed', function ($attribute, $value, $fail) use ($user) {
+                if (Hash::check($value, $user->password)) {
+                    $fail('Password baru tidak boleh sama dengan password lama');
+                }
+            },
             ],
             'role_id' => 'required|exists:roles,id',
         ], [
@@ -97,7 +97,7 @@ public function update(Request $request, User $user)
             'phone.required' => 'The phone number is required.',
             'email.required' => 'The email address is required.',
             'role_id.required' => 'The role is required.',
-            'password.confirmed' => 'The password confirmation does not match.'
+            'password.confirmed' => 'The password confirmation does not match.',
         ]);
 
         // Create a new user

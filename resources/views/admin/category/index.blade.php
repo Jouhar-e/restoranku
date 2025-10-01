@@ -42,7 +42,7 @@
                                 <th>No</th>
                                 <th>Nama Kategori</th>
                                 <th>Deskripsi</th>
-                                <th>Aksi</th>
+                                <th colspan="2">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,8 +52,10 @@
                                     <td>{{ $category->cat_name }}</td>
                                     <td>{{ Str::limit($category->description, 15) }}</td>
                                     <td class="">
-                                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm"><i
-                                                class="bi bi-pencil"></i> Ubah</a>
+                                        <a href="{{ route('categories.edit', $category->id) }}"
+                                            class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Ubah</a>
+                                    </td>
+                                    <td>
                                         <form action="{{ route('categories.destroy', $category->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
