@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
@@ -34,9 +35,7 @@ Route::middleware('role:admin')->group(function () {
 Route::middleware('role:admin|cashier|chef')->group(function () {
     Route::resource('items', ItemController::class);
     Route::resource('orders', OrderController::class);
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('items/update-status/{order}', [ItemController::class, 'updateStatus'])->name('items.updateStatus');
     Route::post('orders/status/{order}', [OrderController::class, 'statusUpdate'])->name('orders.statusUpdate');
 });

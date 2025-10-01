@@ -48,7 +48,7 @@
                                 <th>Metode Pembayaran</th>
                                 <th>Catatan</th>
                                 <th>Dibuat Pada</th>
-                                <th>Aksi</th>
+                                <th colspan="2">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,9 +74,12 @@
                                     <td class="">
                                         <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary btn-sm"><i
                                                 class="bi bi-eye"></i> Lihat</a>
+                                    </td>
+                                    <td>
                                         @if (Auth::user()->role->role_name == 'admin' || Auth::user()->role->role_name == 'cashier')
                                             @if ($order->status == 'pending' && $order->payment_method == 'tunai')
-                                                <form action="{{ route('orders.statusUpdate', $order->id) }}" method="post">
+                                                <form action="{{ route('orders.statusUpdate', $order->id) }}"
+                                                    method="post">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success btn-sm"><i
                                                             class="bi bi-check"></i> Terima Pesanan</button>
