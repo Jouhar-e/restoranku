@@ -65,86 +65,86 @@
                                             @endphp
                                             <tr>
                                                 <th scope="row">
-                                                    <div class="d-flex align-items-center mt-2">
-                                                        <img src="{{ $item['img'] }}" class="img-fluid rounded-circle"
-                                                            style="width: 100px; height: 90px; object-fit: cover;"
-                                                            alt="">
-                                                    </div>
-                                                </th>
-                                                <td class="py-5">{{ $item['name'] }}</td>
-                                                <td class="py-5">
-                                                    {{ 'Rp. ' . number_format($item['price'], 0, ',', '.') }}
-                                                </td>
-                                                <td class="py-5">{{ $item['qty'] }}</td>
-                                                <td class="py-5">
-                                                    {{ 'Rp. ' . number_format($item['price'] * $item['qty'], 0, ',', '.') }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                    <img src="{{ asset('img_item_upload/' . $item['img']) }}"
+                                                        class="img-fluid me-5 rounded-circle"
+                                                        style="width: 80px; height: 80px;" alt=""
+                                                        onerror="this.onerror=null;this.src='{{ $item['img'] }}';">
                             </div>
-                        </div>
-                    </div>
-
-                    @php
-                        $tax = $subTotal * 0.1;
-                        $total = $subTotal + $tax;
-                    @endphp
-
-                    <div class="col-md-12 col-lg-6 col-xl-6">
-                        <div class="row g-4 align-items-center py-3">
-                            <div class="col-lg-12">
-                                <div class="bg-light rounded">
-                                    <div class="p-4">
-                                        <h3 class="display-6 mb-4">Total <span class="fw-normal">Pesanan</span></h3>
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="mb-0 me-4">Subtotal</h5>
-                                            <p class="mb-0">
-                                                {{ 'Rp. ' . number_format($subTotal, 0, ',', '.') }}</p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <p class="mb-0 me-4">Pajak (10%)</p>
-                                            <div class="">
-                                                <p class="mb-0">{{ 'Rp. ' . number_format($tax, 0, ',', '.') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                        <h4 class="mb-0 ps-4 me-4">Total</h4>
-                                        <h5 class="mb-0 pe-4">
-                                            {{ 'Rp. ' . number_format($total, 0, ',', '.') }}</h5>
-                                    </div>
-
-                                    <div class="py-4 mb-4 d-flex justify-content-between">
-                                        <h5 class="mb-0 ps-4 me-4">Metode Pembayaran</h5>
-                                        <div class="pe-4 mb-3 pe-5">
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input bg-primary border-0"
-                                                    id="qris" name="payment" value="qris">
-                                                <label class="form-check-label" for="qris">QRIS</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input bg-primary border-0"
-                                                    id="cash" name="payment" value="tunai">
-                                                <label class="form-check-label" for="cash">Tunai</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-end">
-                                    <button type="button" id="pay-button"
-                                        class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi
-                                        Pesanan</button>
-                                </div>
-
-                            </div>
+                            </th>
+                            <td class="py-5">{{ $item['name'] }}</td>
+                            <td class="py-5">
+                                {{ 'Rp. ' . number_format($item['price'], 0, ',', '.') }}
+                            </td>
+                            <td class="py-5">{{ $item['qty'] }}</td>
+                            <td class="py-5">
+                                {{ 'Rp. ' . number_format($item['price'] * $item['qty'], 0, ',', '.') }}
+                            </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </form>
+
+                @php
+                    $tax = $subTotal * 0.1;
+                    $total = $subTotal + $tax;
+                @endphp
+
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="row g-4 align-items-center py-3">
+                        <div class="col-lg-12">
+                            <div class="bg-light rounded">
+                                <div class="p-4">
+                                    <h3 class="display-6 mb-4">Total <span class="fw-normal">Pesanan</span></h3>
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="mb-0 me-4">Subtotal</h5>
+                                        <p class="mb-0">
+                                            {{ 'Rp. ' . number_format($subTotal, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0 me-4">Pajak (10%)</p>
+                                        <div class="">
+                                            <p class="mb-0">{{ 'Rp. ' . number_format($tax, 0, ',', '.') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                    <h4 class="mb-0 ps-4 me-4">Total</h4>
+                                    <h5 class="mb-0 pe-4">
+                                        {{ 'Rp. ' . number_format($total, 0, ',', '.') }}</h5>
+                                </div>
+
+                                <div class="py-4 mb-4 d-flex justify-content-between">
+                                    <h5 class="mb-0 ps-4 me-4">Metode Pembayaran</h5>
+                                    <div class="pe-4 mb-3 pe-5">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input bg-primary border-0"
+                                                id="qris" name="payment" value="qris">
+                                            <label class="form-check-label" for="qris">QRIS</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input bg-primary border-0"
+                                                id="cash" name="payment" value="tunai">
+                                            <label class="form-check-label" for="cash">Tunai</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="pay-button"
+                                    class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi
+                                    Pesanan</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
         </div>
+        </form>
+    </div>
     </div>
 
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
